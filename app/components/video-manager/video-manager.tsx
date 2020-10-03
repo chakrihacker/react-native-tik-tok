@@ -35,6 +35,8 @@ export const VideoManager = ({
         repeat={true}
         resizeMode={"cover"}
         paused={isPaused}
+        poster={"https://via.placeholder.com/300"}
+        posterResizeMode={"cover"}
       />
     </TouchableOpacity>
   )
