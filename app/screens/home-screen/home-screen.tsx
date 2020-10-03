@@ -12,9 +12,15 @@ const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
 }
 
-const HomeScreen = () => {
+export const HomeScreen = () => {
   const [currentVideoId, setCurrentVideoId] = useState("")
   const [isCommentsVisible, setCommentsVisible] = useState(false)
+  const [isPaused, setIsPaused] = useState(false)
+
+  const onVideoChanged = (id: string) => {
+    setCurrentVideoId(id)
+    setIsPaused(false)
+  }
 
   return (
     <View style={FULL}>
@@ -22,8 +28,10 @@ const HomeScreen = () => {
         <VideoFeed
           videos={videos}
           currentVideoId={currentVideoId}
-          setCurrentVideoId={setCurrentVideoId}
+          onVideoChanged={onVideoChanged}
           showComments={() => setCommentsVisible(true)}
+          isPaused={isPaused}
+          onVideoTap={() => setIsPaused(!isPaused)}
         />
         <Comments
           isModalVisible={isCommentsVisible}
@@ -34,5 +42,3 @@ const HomeScreen = () => {
     </View>
   )
 }
-
-export default HomeScreen

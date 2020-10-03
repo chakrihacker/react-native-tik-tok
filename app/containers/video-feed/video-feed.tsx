@@ -1,8 +1,8 @@
 import ViewPager from "@react-native-community/viewpager"
 import React from "react"
 import { View, ViewStyle, TextStyle } from "react-native"
-import Video from "react-native-video"
 import Icon from "react-native-vector-icons/EvilIcons"
+import { VideoManager } from "../../components/video-manager/video-manager"
 
 interface VideoT {
   id: string
@@ -12,8 +12,10 @@ interface VideoT {
 interface VideoFeedProps {
   videos: VideoT[]
   currentVideoId: string
-  setCurrentVideoId: (id: string) => void
+  onVideoChanged: (id: string) => void
   showComments: Function
+  isPaused: boolean
+  onVideoTap: Function
 }
 
 const FULL: ViewStyle = { flex: 1 }
@@ -28,30 +30,37 @@ const COMMENTICONSTYLE: TextStyle = {
   backgroundColor: "#fff",
 }
 
-const VideoFeed = ({ currentVideoId, setCurrentVideoId, showComments, videos }: VideoFeedProps) => {
+const VideoFeed = ({
+  currentVideoId,
+  onVideoChanged,
+  showComments,
+  videos,
+  isPaused,
+  onVideoTap,
+}: VideoFeedProps) => {
   const onCommentIconPressed = () => {
     // fetch comments
     showComments(true)
   }
 
-  const onVideoChanged = (index: number) => {
-    setCurrentVideoId(videos[index].id)
+  const handleVideoChanged = (index: number) => {
+    onVideoChanged(videos[index].id)
   }
 
   return (
     <ViewPager
       style={FULL}
-      onPageSelected={(e) => onVideoChanged(e.nativeEvent.position)}
+      onPageSelected={(e) => handleVideoChanged(e.nativeEvent.position)}
       orientation={"vertical"}
     >
       {videos.map((video, index) => (
-        <View key={video.id}>
-          <Video
-            style={FULL}
-            key={video.id}
-            source={video.url}
-            repeat={true}
-            paused={videos[index].id !== currentVideoId}
+        <View key={video.id} collapsable={false}>
+          <VideoManager
+            isCurrentVideo={videos[index].id === currentVideoId}
+            isPaused={isPaused}
+            videoId={video.id}
+            videoUrl={video.url}
+            onVideoTap={onVideoTap}
           />
           <View style={COMMENTS}>
             <Icon
