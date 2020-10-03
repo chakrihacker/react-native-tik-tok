@@ -1,10 +1,10 @@
 import React, { useState } from "react"
 import { View, ViewStyle } from "react-native"
-import Video from "react-native-video"
-import ViewPager from "@react-native-community/viewpager"
 import { Screen } from "../../components"
 import { color } from "../../theme"
 import videos from "../../data_sources/videos"
+import Comments from "../../containers/comments/comments"
+import VideoFeed from "../../containers/video-feed/video-feed"
 
 const FULL: ViewStyle = { flex: 1 }
 
@@ -13,28 +13,23 @@ const CONTAINER: ViewStyle = {
 }
 
 const HomeScreen = () => {
-  const [currentVideo, setCurrentVideo] = useState(0)
+  const [currentVideoId, setCurrentVideoId] = useState("")
+  const [isCommentsVisible, setCommentsVisible] = useState(false)
 
   return (
     <View style={FULL}>
       <Screen style={CONTAINER}>
-        <ViewPager
-          style={FULL}
-          initialPage={currentVideo}
-          onPageSelected={(e) => setCurrentVideo(e.nativeEvent.position)}
-          orientation={"vertical"}
-        >
-          {videos.map((video, index) => (
-            <>
-              <Video
-                key={video.id}
-                source={video.url}
-                repeat={true}
-                paused={index !== currentVideo}
-              />
-            </>
-          ))}
-        </ViewPager>
+        <VideoFeed
+          videos={videos}
+          currentVideoId={currentVideoId}
+          setCurrentVideoId={setCurrentVideoId}
+          showComments={() => setCommentsVisible(true)}
+        />
+        <Comments
+          isModalVisible={isCommentsVisible}
+          closeModal={() => setCommentsVisible(false)}
+          videoId={currentVideoId}
+        />
       </Screen>
     </View>
   )
