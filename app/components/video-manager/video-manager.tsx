@@ -1,5 +1,5 @@
 import React from "react"
-import { ViewStyle, Image, ImageStyle, TouchableOpacity } from "react-native"
+import { Image, ImageStyle, TouchableOpacity, ViewStyle } from "react-native"
 import Video from "react-native-video"
 
 interface VideoManagerProps {

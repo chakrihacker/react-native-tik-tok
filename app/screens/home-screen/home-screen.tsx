@@ -1,10 +1,11 @@
 import React, { useState } from "react"
 import { View, ViewStyle } from "react-native"
+
 import { Screen } from "../../components"
-import { color } from "../../theme"
-import videos from "../../data_sources/videos"
 import Comments from "../../containers/comments/comments"
 import VideoFeed from "../../containers/video-feed/video-feed"
+import videos from "../../data_sources/videos"
+import { color } from "../../theme"
 
 const FULL: ViewStyle = { flex: 1 }
 
